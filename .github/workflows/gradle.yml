@@ -15,16 +15,16 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Install Chrome 135
+      - name: Install Chrome 132
         run: |
-          wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/133.0.0.0/linux64/chrome-linux64.zip
+          wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/132.0.0.0/linux64/chrome-linux64.zip
           unzip chrome-linux64.zip
-          sudo mv chrome-linux64 /opt/chrome133
-          sudo ln -sf /opt/chrome133/chrome /usr/bin/google-chrome
+          sudo mv chrome-linux64 /opt/chrome132
+          sudo ln -sf /opt/chrome132/chrome /usr/bin/google-chrome
 
-      - name: Install ChromeDriver 135
+      - name: Install ChromeDriver 132
         run: |
-          wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/133.0.0.0/linux64/chromedriver-linux64.zip
+          wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/132.0.0.0/linux64/chromedriver-linux64.zip
           unzip chromedriver-linux64.zip
           sudo mv chromedriver-linux64/chromedriver /usr/bin/chromedriver
           sudo chmod +x /usr/bin/chromedriver
@@ -33,10 +33,11 @@ jobs:
         run: chmod +x gradlew
 
       - name: Start SUT
-        run: java -jar ./artifacts/app-mbank.jar &
+        run: java -jar ./artifacts/app-order.jar &
 
       - name: Wait for SUT to start
         run: sleep 10  # при необходимости увеличь время
 
       - name: Run tests with Gradle
         run: ./gradlew test --info
+
