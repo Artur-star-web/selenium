@@ -4,19 +4,39 @@ on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up JDK 11
         uses: actions/setup-java@v2
         with:
           java-version: '11'
           distribution: 'adopt'
+
+      - name: Install Chrome 133
+        run: |
+          wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/133.0.0.0/linux64/chrome-linux64.zip
+          unzip chrome-linux64.zip
+          sudo mv chrome-linux64 /opt/chrome133
+          sudo ln -sf /opt/chrome133/chrome /usr/bin/google-chrome
+
+      - name: Install ChromeDriver 133
+        run: |
+          wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/133.0.0.0/linux64/chromedriver-linux64.zip
+          unzip chromedriver-linux64.zip
+          sudo mv chromedriver-linux64/chromedriver /usr/bin/chromedriver
+          sudo chmod +x /usr/bin/chromedriver
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
       - name: Start SUT
         run: java -jar ./artifacts/app-mbank.jar &
-      - name: Build with Gradle
+
+      - name: Wait for SUT to start
+        run: sleep 10  # при необходимости увеличь время
+
+      - name: Run tests with Gradle
         run: ./gradlew test --info
