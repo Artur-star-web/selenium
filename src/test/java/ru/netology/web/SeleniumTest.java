@@ -48,7 +48,7 @@ public class SeleniumTest {
         elements.get(1).sendKeys("+79270000000");
         driver.findElement(By.className("checkbox__box")).click();
         driver.findElement(By.className("button")).click();
-        String text = driver.findElement(By.className("App_appContainer__3jRx1")).getText();
+        String text = driver.findElement(By.cssSelector(".App_appContainer__3jRx1")).getText();
         assertEquals("Заявка на дебетовую карту\n" +
                 "  Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", text.trim());
     }
